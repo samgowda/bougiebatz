@@ -1,6 +1,8 @@
 import React from 'react';
 import { default as Fade } from 'react-fade';
-
+// this is the component for the weekly photos
+// maps over the results and renders each photo
+// retrieves url for the medium sized images
 var MediumPhotoEntry = ({mediumPhotos}) => (
   <div className="medium-photos">
     {mediumPhotos.map((photo, i) =>

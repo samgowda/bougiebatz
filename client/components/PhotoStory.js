@@ -6,19 +6,16 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import { default as Fade } from 'react-fade';
 
 class PhotoStory extends React.Component {
-  // static contextTypes = {
-  //   router: React.PropTypes.object
-  // }
   constructor(props) {
-    super(props)
-
+    super(props);
+//state contains an array of photos, and an array of currentPhotos  which will be rendered, and an index to see what photo will be rendered when the next or previous buttons are clicked
     this.state = {
       photos: [],
       currentPhotos: [],
       currentPhotoIndex: 1
-    }
+    };
   }
-
+//get request for photos, filters photos for ones with all image sizes, and then sets the state for photos with the whole array, and sets the currentPhoto which will be rendered (setState triggers rendering)
   getPhotos(source, section, time) {
     axios
     .get('api/Large', {
@@ -32,48 +29,51 @@ class PhotoStory extends React.Component {
     })
     .then((response) => {
       var multimediaPhotos = response.data.results
-      .filter((photo) => photo.multimedia.length === 4)
+      .filter((photo) => photo.multimedia.length === 4);
       this.setState({
         photos: multimediaPhotos,
         currentPhotos: multimediaPhotos.slice(0, this.state.currentPhotoIndex)
-      })
+      });
     })
     .catch(function (error) {
       console.log(error);
     });
   }
-
+//this function is triggered when the next article button is clicked
   getNextPhoto(e) {
-    var index = this.state.currentPhotoIndex + 1
-    var last = this.state.photos.length - 1
+    //e is the event passed in from the click event
+    //the if statement is to make sure only indices in the array are rendered
+    //prevent default is needed to prevent the default action and the whole page from reloading
+    var index = this.state.currentPhotoIndex + 1;
+    var last = this.state.photos.length - 1;
     if(index > last) {
-      e.preventDefault()
-      return null
+      e.preventDefault();
+      return null;
     }
-    var photos = this.state.photos.slice(index - 1, index)
+    var photos = this.state.photos.slice(index - 1, index);
     this.setState({
       currentPhotoIndex: index,
       currentPhotos: photos
-    })
-    e.preventDefault()
+    });
+    e.preventDefault();
   }
-
+//triggered when previous button is clicked, same idea as getNextPhoto()
   getPreviousPhoto(e) {
-    var index = this.state.currentPhotoIndex - 1
-    if(index < 1) {e.preventDefault(); return null}
-    var photos = this.state.photos.slice(index - 1, index)
+    var index = this.state.currentPhotoIndex - 1;
+    if(index < 1) {e.preventDefault(); return null;}
+    var photos = this.state.photos.slice(index - 1, index);
     this.setState({
       currentPhotoIndex: index,
       currentPhotos: photos
-    })
-    e.preventDefault()
+    });
+    e.preventDefault();
   }
-
+//get request to get photos from nytimes whne the component is mounted
   componentDidMount() {
     this.getPhotos('all', 'all', '24');
   }
 
-
+//renders the current photo, buttons, and abstract for the photo
   render() {
     return (
       <div>
@@ -98,6 +98,7 @@ class PhotoStory extends React.Component {
 }
 
 //styles to attach to style attribute of elements
+//inlines styles- yeah
 var center = {
   'text-align': 'center'
 }

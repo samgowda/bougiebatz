@@ -4,6 +4,7 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import axios from 'axios';
 import { default as Fade } from 'react-fade';
 
+//This component fetches saved links from the database and renders saved count
 class Saved extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +13,7 @@ class Saved extends React.Component {
       links: []
     };
   }
-//get request to server which will send a get request to the db
+//get request to server which sends get request to the db
   getLinks() {
     axios.get('api/article')
       .then((res) => {
@@ -20,6 +21,9 @@ class Saved extends React.Component {
         //res is an object with property data containing array of ulrs
         //res mapped in articleRoutes.js to just be the url
         var links = [];
+
+        //noRepeats should = an object with each link in the database with its number of occurances so that images are only rendered once,
+        //hence no repeats
         var noRepeats = res.data.reduce((obj, cur)=> {
           if(!(cur in obj)){
             obj[cur] = 1;
@@ -63,5 +67,7 @@ class Saved extends React.Component {
     )
   }
 }
+
+//see class .revealCount in style.css for on hover effects
 
 export default Saved;

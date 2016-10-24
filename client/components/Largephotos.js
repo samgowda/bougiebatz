@@ -6,12 +6,10 @@ import Select from 'react-select';
 import { default as Fade } from 'react-fade';
 
 class Large extends React.Component {
-  // static contextTypes = {
-  //   router: React.PropTypes.object
-  // }
   constructor(props) {
     super(props);
-
+    //values and options are for the Select module from React-select,
+    //values contains all of the API searchable NY times sections, and is used to check if what is entered in the search bar is a valid section
     this.state = {
       photos: [],
       values: {
@@ -48,7 +46,7 @@ class Large extends React.Component {
         world: 'world',
         'your money': 'your money'
       },
-      //for dropdown menu
+      //options populates Select module dropdown list, see react-select docs for more details
       options: [
         { value:  'all', label: 'all' },
         { value: 'arts', label: 'arts' },
@@ -85,6 +83,7 @@ class Large extends React.Component {
       ]
     };
   }
+  //getNewImages checks if the key in the Select search bar is in values, this prevents some but not all api requests returning nothing
   getNewImages(value) {
     for(let key in this.state.values) {
       if(key === value) {
@@ -92,26 +91,23 @@ class Large extends React.Component {
       }
     }
   }
-
+//get request to nytimes api, see their docs for details
   getPhotos(source, section, time, limit) {
     axios
     .get('api/Large', {
+      //setting parameters for api, short circuiting the logical operator 'or', so if no source/section or time is entered, then there are default search params.
         params: {
           source: source || 'all',
           section: section || 'all',
           time: time || '24',
           limit: 20,
           offset: 0
-          //only rendering 4, but sometimes the articles do not have photos
-          //so retrieve extra and then select 4 later
         }
     })
     .then((response) => {
       var multimediaPhotos = response.data.results
         .filter((photo) => photo.multimedia.length === 4);
-        // .splice(0,4)
-      //there was a problem because some articles multimedia is ''
-      //only want to render 4 images so splice
+        //filters response to only keep articles with 4 sizes of photos, so the largest can be rendered
       this.setState({
         photos: multimediaPhotos
       });
@@ -122,26 +118,27 @@ class Large extends React.Component {
   }
 
   componentDidMount() {
-    this.getPhotos('all', this.state.val, '24');
+    this.getPhotos('all', 'all', '24');
   }
 
   saveLink(e) {
-    console.log($(e.currentTarget).attr('src'), "++++++++");
+    //jquerry imported in index.html, used to access the src attribute on element that was clicked on which is avaiable on the event object
     axios.post('api/article', {
       articleImageUrl: $(e.currentTarget).attr('src')
     })
-    .then((res) => console.log('sucess from large photos')
+    .then((res) => console.log('success!')
     )
     .catch(function (error) {
       console.log(error);
     });
   }
-
+// the photos from this.state and the saveLink method are passed down to LargePhotos
+//saveLink is bound to this component so that when it is called outside of this component it will be executed with this context
   render() {
     return (
       <div>
       <div className="select">
-      {/* Select is an npm module that creates... look it up */}
+      {/* Select is an npm module that creates a search bar... look it up */}
           <Select
             placeholder=""
             options={this.state.options}
@@ -163,7 +160,10 @@ class Large extends React.Component {
 
   }
 }
-//stateless functional component for rendering images
+//stateless functional component for rendering images, could be placed in a separate file to improve modularity
+// Fade is an npm module that fades components when they are rendered
+//when mapping photos, something besides i should be used as the key because i will not be a unique id, but this does not cause problems in this situation
+//if you look at the multimedia array in the photos object, the url at the 3rd index is the image with the greatest resolution
 var LargePhotos = ({ photos, saveLink }) => (
   <Fade duration={.8}>
   <div className="largePhotos">
@@ -178,9 +178,7 @@ var LargePhotos = ({ photos, saveLink }) => (
    </div>
    </Fade>
 )
-
-var hide = {
-  'display':'none',
-}
-
+//the classnames here enable the div with photo.abstract to only appear on hover
+//export default enables this code to be imported without { }  (without object destructuring)
+  //although you would need { } when importing if you export multiple things with export default
 export default Large;

@@ -1,4 +1,4 @@
 Team:
-  Product Owner: Sam Gowda
+  Product Owner: Samantha Gowda
   Scrum Master: Jake Smith
-  Development Team: Julia Randall, Nav Ghuman, Sam Gowda, Jake Smith
+  Development Team: Julia Randall, Navkiran Ghuman, Samantha Gowda, Jake Smith

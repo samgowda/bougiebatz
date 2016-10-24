@@ -4,10 +4,12 @@ import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router';
 import Large from './Largephotos.js';
 import Medium from './Mediumphotos.js';
 import Small from './Smallphotos.js';
-import PhotoStory from './PhotoStory.js'
+import PhotoStory from './PhotoStory.js';
 import css from '../styles/style.css';
 import Home from './home.js';
 import Saved from './dbLinks.js';
+
+//top level component- defines routes, renders header and sub components
 
 class App extends React.Component {
   constructor() {
@@ -15,6 +17,7 @@ class App extends React.Component {
 
     this.state = {};
   }
+  //utilizing Link from react-router, see documentation for more info
   render () {
     return (
       <div>
@@ -34,6 +37,8 @@ class App extends React.Component {
     )
   }
 }
+
+//This is the router
 
 render((
   <Router history={browserHistory}>

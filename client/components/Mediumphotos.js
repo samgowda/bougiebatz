@@ -40,45 +40,26 @@ class Medium extends React.Component {
         limit: 30,
         offset: '30'
       }
-      // params: {
-      //   source: source || 'all',
-      //   section: section || 'all',
-      //   time: time || '24',
-      //   limit: limit || 8
-      // }
     })
     .then((response) => {
       var multimediaPhotos = response.data.results
       .filter((photo) => photo.multimedia.length === 4 || photo.multimedia.length === 3  )
       .splice(4,20)
       //there was a problem because some articles multimedia is ''
-      //only want to render 8 images so splice
+      //want to render 20 images so used splice on results
       this.setState({
         mediumPhotos: multimediaPhotos
       })
     })
     .catch(function (error) {
       console.log(error);
-      // this.setState({ mediumPhotos: [] });
     });
   }
 
   componentDidMount() {
     this.getPhotos();
   }
-  // // Get the photos from the server when the component loads
-  // componentDidMount() {
-  //   axios.get('http://api.nytimes.com/svc/news/v3/content/all/all.json')
-  //   .then((res) => {
-  //     this.setState({ mediumPhotos: res.data })
-  //   })
-  //   // Use .catch for error handling
-  //   // Notice the reseting of the photos in case of an error
-  //   .catch((err) => {
-  //     console.error(err)
-  //     this.setState({ mediumPhotos: [] })
-  //   })
-  // }
+// updating state of medium photos here, and passing down state into medium photo entry 
   render() {
     return (
       <div>

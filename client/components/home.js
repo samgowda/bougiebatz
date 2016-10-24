@@ -5,6 +5,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import { Grid, Row, Col } from 'react-bootstrap';
 
+//This component renders the home page
 class Home extends React.Component {
   static contextTypes = {
     router: React.PropTypes.object
@@ -24,4 +25,4 @@ render() {
 
 }
 
-export default Home
+export default Home;

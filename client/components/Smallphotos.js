@@ -4,23 +4,13 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import axios from 'axios';
 import PhotoEntry from './Photoentry.js';
 import ImageLayout from 'react-image-layout';
-// import react-component-gallery from "react-component-gallery";
 
 class Small extends React.Component {
-	// static contextTypes = {
-  //   router: React.PropTypes.object
-  // }
+
 	constructor(props) {
 		super(props)
 			this.state = {
-				photos: [],
-				searchParams: {
-					source: 'all',
-					section: 'all',
-					time: '168',
-					limit: 50,
-					offest: '40'
-				}
+				photos: []
 			}
 	}
 
@@ -41,7 +31,7 @@ class Small extends React.Component {
 
       this.setState({
         photos: multimediaPhotos
-      })
+      });
     })
     .catch(function (error) {
       console.log(error);
@@ -50,9 +40,8 @@ class Small extends React.Component {
 
   componentDidMount() {
     this.getPhotos();
-    console.log()
   }
-
+// updating state of small photos here, and passing down state into photo entry
 	render() {
 		return (
 		<div>
